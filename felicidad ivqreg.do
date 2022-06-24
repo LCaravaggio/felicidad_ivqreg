@@ -15,46 +15,79 @@ hist p1st if p1st>0
 generate SNU = 1 
 replace SNU = 0 if s19m_10==1
 
+* Elimino las no respuestas de satisfacción con la vida, smartphone ownership, nivel de estudios, y si posee agua caliente de cañería
 keep if p1st>0
-keep if m_nc>0
+keep if s26_l>0
+keep if s16>0 
+keep if s26_h>0
 
-*Regresión cuantílica usando Conexión a Internet en el Hogar como IV de SNU
-quietly ivqreg2 p1st SNU if edad>18 & edad<25, instruments(SNU m_nc)
+* OLS 
+quietly reg p1st SNU
+estimates store m_solo
+quietly reg p1st SNU s16 s26_h 
+estimates store todo1
+quietly reg p1st SNU s16 s26_h if (edad>18 & edad<25)
+estimates store m1825
+quietly reg p1st SNU s16 s26_h if edad>60
+estimates store más60
+quietly reg p1st SNU s16 s26_h s26_b p13st_i edad reg
+estimates store todo2
+
+
+estimates table m_solo todo1 m1825 más60 todo2, b(%9.4f) star stats(N r2) title(OLS)
+
+
+
+* Chequeo smartphone ownership como IV
+quietly reg p1st SNU s26_l
+estimates store OLS1
+quietly reg SNU s26_l
+estimates store OLS2
+
+* 2SLS
+quietly reg SNU s26_l
+estimates store twoSLS1
+predict SNU_hat
+quietly reg p1st SNU_hat
+estimates store twoSLS2
+
+estimates table OLS1 OLS2 twoSLS1 twoSLS2, b(%9.4f) star stats(N r2) title(OLS)
+
+
+*Regresión cuantílica usando Smartphone ownership como IV de SNU
+quietly ivqreg2 p1st SNU if (edad>18 & edad<25), instruments(SNU s26_l)
 estimates store sin_exog
 * Cuantíl del 15% más feliz
-quietly ivqreg2 p1st s16 s26_h SNU if edad>18 & edad<25 , instruments(s16 s26_h SNU m_nc) q(.15)
+quietly ivqreg2 p1st s16 s26_h SNU if (edad>18 & edad<25) , instruments(SNU s26_l s16 s26_h) q(.15)
 estimates store tau15
 * Cuantíl del 50%
-quietly ivqreg2 p1st s16 s26_h SNU if edad>18 & edad<25, instruments(s16 s26_h SNU m_nc) q(.5)
+quietly ivqreg2 p1st s16 s26_h SNU if (edad>18 & edad<25), instruments(SNU s26_l s16 s26_h) q(.5)
 estimates store tau50
 * Cuantíl del 15% menos feliz
-quietly ivqreg2 p1st s16 s26_h SNU  if edad>18 & edad<25, instruments(s16 s26_h SNU m_nc) q(.85)
+quietly ivqreg2 p1st s16 s26_h SNU  if (edad>18 & edad<25), instruments(SNU s26_l s16 s26_h) q(.85)
 estimates store tau85
 
 
 * Edad entre 18 y 25
-sjlog using output, replace
-estout *, cells(b(star fmt(%6.3f)) se(par)) stats(N, fmt(%6.0f)) collabels(none) sty(smcl) var(8) model(8) stard legend  starlevels(* 0.10 ** 0.05 *** 0.01 )
-sjlog close, replace
+estimates table sin_exog tau15 tau50 tau85, b(%9.4f) star stats(N) title(Entre 18 y 25)
 
 
 *Regresión cuantílica usando Conexión a Internet en el Hogar como IV de SNU
-quietly ivqreg2 p1st SNU if edad>60 , instruments(SNU m_nc)
+quietly ivqreg2 p1st SNU if edad>60 , instruments(SNU s26_l)
 estimates store sin_exog
 * Cuantíl del 15% más feliz
-quietly ivqreg2 p1st s16 s26_h SNU if edad>60 , instruments(s16 s26_h SNU m_nc) q(.15)
+quietly ivqreg2 p1st s16 s26_h SNU if edad>60 , instruments(s16 s26_h SNU s26_l) q(.15)
 estimates store tau15
 * Cuantíl del 50%
-quietly ivqreg2 p1st s16 s26_h SNU if edad>60 , instruments(s16 s26_h SNU m_nc) q(.5)
+quietly ivqreg2 p1st s16 s26_h SNU if edad>60 , instruments(s16 s26_h SNU s26_l) q(.5)
 estimates store tau50
 * Cuantíl del 15% menos feliz
-quietly ivqreg2 p1st s16 s26_h SNU if edad>60 , instruments(s16 s26_h SNU m_nc) q(.85)
+quietly ivqreg2 p1st s16 s26_h SNU if edad>60 , instruments(s16 s26_h SNU s26_l) q(.85)
 estimates store tau85
 
 
-* Edad más 60
-sjlog using output, replace
-estout *, cells(b(star fmt(%6.3f)) se(par)) stats(N, fmt(%6.0f)) collabels(none) sty(smcl) var(8) model(8) stard legend  starlevels(* 0.10 ** 0.05 *** 0.01 )
-sjlog close, replace
+* Edad entre 18 y 25
+estimates table sin_exog tau15 tau50 tau85, b(%9.4f) star stats(N) title(Mayores de 60)
+
 
 
