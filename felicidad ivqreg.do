@@ -53,41 +53,53 @@ estimates store twoSLS2
 
 estimates table OLS1 OLS2 twoSLS1 twoSLS2, b(%9.4f) star stats(N r2) title(OLS)
 
+* Estimación con IV y Test de Kleibergen-Paap
+ivreg2 p1st s16 s26_h (SNU=s26_l), robust
+
+
 
 *Regresión cuantílica usando Smartphone ownership como IV de SNU
 quietly ivqreg2 p1st SNU if (edad>18 & edad<25), instruments(SNU s26_l)
 estimates store sin_exog
 * Cuantíl del 15% más feliz
-quietly ivqreg2 p1st s16 s26_h SNU if (edad>18 & edad<25) , instruments(SNU s26_l s16 s26_h) q(.15)
-estimates store tau15
+quietly ivqreg2 p1st s16 s26_h SNU if (edad>18 & edad<25) , instruments(SNU s26_l s16 s26_h) q(.25)
+estimates store tau25
 * Cuantíl del 50%
 quietly ivqreg2 p1st s16 s26_h SNU if (edad>18 & edad<25), instruments(SNU s26_l s16 s26_h) q(.5)
 estimates store tau50
 * Cuantíl del 15% menos feliz
-quietly ivqreg2 p1st s16 s26_h SNU  if (edad>18 & edad<25), instruments(SNU s26_l s16 s26_h) q(.85)
-estimates store tau85
+quietly ivqreg2 p1st s16 s26_h SNU  if (edad>18 & edad<25), instruments(SNU s26_l s16 s26_h) q(.75)
+estimates store tau75
 
 
 * Edad entre 18 y 25
-estimates table sin_exog tau15 tau50 tau85, b(%9.4f) star stats(N) title(Entre 18 y 25)
+estimates table sin_exog tau25 tau50 tau75, b(%9.4f) star stats(N) title(Entre 18 y 25)
 
 
 *Regresión cuantílica usando Conexión a Internet en el Hogar como IV de SNU
 quietly ivqreg2 p1st SNU if edad>60 , instruments(SNU s26_l)
 estimates store sin_exog
 * Cuantíl del 15% más feliz
-quietly ivqreg2 p1st s16 s26_h SNU if edad>60 , instruments(s16 s26_h SNU s26_l) q(.15)
-estimates store tau15
+quietly ivqreg2 p1st s16 s26_h SNU if edad>60 , instruments(s16 s26_h SNU s26_l) q(.25)
+estimates store tau25
 * Cuantíl del 50%
 quietly ivqreg2 p1st s16 s26_h SNU if edad>60 , instruments(s16 s26_h SNU s26_l) q(.5)
 estimates store tau50
 * Cuantíl del 15% menos feliz
-quietly ivqreg2 p1st s16 s26_h SNU if edad>60 , instruments(s16 s26_h SNU s26_l) q(.85)
-estimates store tau85
+quietly ivqreg2 p1st s16 s26_h SNU if edad>60 , instruments(s16 s26_h SNU s26_l) q(.75)
+estimates store tau75
 
 
-* Edad entre 18 y 25
-estimates table sin_exog tau15 tau50 tau85, b(%9.4f) star stats(N) title(Mayores de 60)
+* Edad más 60
+estimates table sin_exog tau25 tau50 tau75, b(%9.4f) star stats(N) title(Mayores de 60)
 
 
+* Smoothed IV quantile regression
+quietly sivqr p1st s16 s26_h (SNU=s26_l) if edad>60, quantile(.25)
+estimates store tau25
+quietly sivqr p1st s16 s26_h (SNU=s26_l) if edad>60, quantile(.5)
+estimates store tau50
+quietly sivqr p1st s16 s26_h (SNU=s26_l) if edad>60, quantile(.75)
+estimates store tau75
 
+estimates table tau25 tau50 tau75, b(%9.4f) star stats(N) title(SIVQR)
