@@ -8,7 +8,7 @@ qui do c:\data\ivqreg.mata
 set more off
 set seed 12345
 
-use c:\data\LB2020
+use c:\data\LB2018
 
 *Histograma de la satisfacción con la vida
 hist p1st if p1st>0
@@ -32,7 +32,7 @@ quietly reg p1st SNU s16 s26_h if (edad>18 & edad<25)
 estimates store m1825
 quietly reg p1st SNU s16 s26_h if edad>60
 estimates store más60
-quietly reg p1st SNU s16 s26_h s26_b p13st_i edad reg
+quietly reg p1st SNU s16 s26_h s26_b edad reg
 estimates store todo2
 
 
@@ -75,7 +75,7 @@ estimates store tau75
 estimates table tau25 tau50 tau75, b(%9.4f) star stats(N) title(Irrestricto)
 
 
-*Regresión cuantílica usando Smartphone ownership como IV de SNU
+*Regresión cuantílica usando Smartphone ownership como IV de SNU. Casa propia y 
 * Cuantíl del 15% más feliz
 quietly ivqreg2 p1st  s26_h s26_b s1 SNU if (edad>18 & edad<25) , instruments(SNU s26_l s26_h s26_b s1) q(.25)
 estimates store tau25
