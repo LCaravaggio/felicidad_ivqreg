@@ -51,6 +51,16 @@ keep if s26_l>0
 keep if s16>0 
 keep if s26_h>0
 
+estpost sum  p1st fel SNU p4stgbs p2st p7stgbs p9stgbs s26_l s16 s26_h s26_b
+esttab, cells("count mean sd min max") noobs
+esttab using "c:\data\desc felicidad.xls", append cells("count mean sd min max") noobs
+estpost sum   p1st fel SNU p4stgbs p2st p7stgbs p9stgbs s26_l s16 s26_h s26_b if SNU==1
+esttab, cells("count mean sd min max") noobs
+esttab using "c:\data\desc felicidad.xls", append cells("count mean sd min max") noobs
+estpost sum   p1st fel SNU p4stgbs p2st p7stgbs p9stgbs s26_l s16 s26_h s26_b if SNU==0
+esttab, cells("count mean sd min max") noobs
+esttab using "c:\data\desc felicidad.xls", append cells("count mean sd min max") noobs
+
 * OLS 
 quietly reg p1st SNU
 estimates store m_solo
