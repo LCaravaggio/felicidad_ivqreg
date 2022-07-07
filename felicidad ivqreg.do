@@ -34,6 +34,7 @@ replace fel=fel+1 if p7stgbs==5
 
 replace fel=fel+2 if p9stgbs==1
 
+label variable fel "Felicidad subjetiva creada"
 
 *Histograma de la satisfacción con la vida y felicidad alternativa
 histogram fel, discrete normal kdensity
