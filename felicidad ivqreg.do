@@ -94,7 +94,6 @@ outreg2 using "c:\data\salida felicidad.xls", excel ctitle("OLS2") append
 * 2SLS
 quietly reg SNU s26_l
 estimates store twoSLS1
-outreg2 using "c:\data\salida felicidad.xls", excel ctitle("twoSLS1") append
 predict SNU_hat
 quietly reg p1st SNU_hat
 estimates store twoSLS2
