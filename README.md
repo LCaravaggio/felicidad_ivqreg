@@ -1,6 +1,6 @@
 # ¿Cómo afecta el uso de las redes sociales a la felicidad?
 
-Resumen
+Resumen </br>
 Se analiza el impacto del uso de redes sociales en el bienestar subjetivo (SBW) de la población latinoamericana frente a la irrupción de la pandemia
 de COVID-19. Dado el fuerte proceso de digitalización de la vida como consecuencia de la pandemia (por medidas restrictivas y decisiones de cuidado),
 se juzga pertinente analizar en qué casos el uso de redes sociales tiene efectos positivos o negativos en el bienestar. Este conocimiento permitiría adoptar
