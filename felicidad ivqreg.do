@@ -295,3 +295,14 @@ outreg2 using "c:\data\salida felicidad.xls", excel ctitle("fel sivq75") append
 
 * Smoothed IV quantile regression
 estimates table tau25 tau50 tau75, b(%9.4f) star stats(N) title(SIVQR)
+
+
+* Gráficos de impacto sobre la distribución cuantílica
+ivqreg2 fel s26_h s26_b s1 SNU  , instruments(SNU s26_l  s26_h s26_b s1)
+qregplot SNU, mtitles("Impacto en felicidad")
+graph export "C:\data\Graph3.png", as(png) name("Graph")
+
+ivqreg2 p1st s26_h s26_b s1 SNU  , instruments(SNU s26_l  s26_h s26_b s1)
+qregplot SNU, mtitles("Impacto en p1st")
+graph export "C:\data\Graph4.png", as(png) name("Graph")
+
