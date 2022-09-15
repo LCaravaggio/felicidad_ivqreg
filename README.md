@@ -5,4 +5,4 @@ Se analiza el impacto del uso de redes sociales en el bienestar subjetivo (SBW) 
 </br>
 
 ## Presentación
-El trabajo será presentado en las <a href=https://sites.google.com/view/vi-jornadas-argentinas-de-econ/home>VI Jornadas de Econometría</a> FCE-UBA el 15 de Septiembre de 2022.
+El trabajo fue presentado en las <a href=https://sites.google.com/view/vi-jornadas-argentinas-de-econ/home>VI Jornadas de Econometría</a> FCE-UBA el 15 de Septiembre de 2022.
