@@ -3,7 +3,7 @@
 clear all
 cscript
 
-qui do c:\data\ivqreg.mata
+* qui do c:\data\ivqreg.mata
 
 set more off
 set seed 12345
@@ -166,13 +166,13 @@ estimates table tau25 tau50 tau75, b(%9.4f) star stats(N) title(Mayores de 60)
 * Smoothed IV quantile regression
 quietly sivqr p1st  s26_h s26_b s1 (SNU=s26_l) , quantile(.25)
 estimates store tau25
-outreg2 using "c:\data\salida felicidad.xls", excel ctitle("sivq25") append
+outreg2 using "c:\data\salida felicidad 4.xls", excel ctitle("sivq25") append
 quietly sivqr p1st s26_h s26_b s1 (SNU=s26_l) , quantile(.5)
 estimates store tau50
-outreg2 using "c:\data\salida felicidad.xls", excel ctitle("sivq50") append
+outreg2 using "c:\data\salida felicidad 4.xls", excel ctitle("sivq50") append
 quietly sivqr p1st  s26_h s26_b s1 (SNU=s26_l) , quantile(.75)
 estimates store tau75
-outreg2 using "c:\data\salida felicidad.xls", excel ctitle("sivq75") append
+outreg2 using "c:\data\salida felicidad 4.xls", excel ctitle("sivq75") append
 
 * Smoothed IV quantile regression
 estimates table tau25 tau50 tau75, b(%9.4f) star stats(N) title(SIVQR)
@@ -285,13 +285,13 @@ estimates table tau25 tau50 tau75, b(%9.4f) star stats(N) title(Mayores de 60)
 * Smoothed IV quantile regression
 quietly sivqr fel  s26_h s26_b s1 (SNU=s26_l) , quantile(.25)
 estimates store tau25
-outreg2 using "c:\data\salida felicidad.xls", excel ctitle("fel sivq25") append
+outreg2 using "c:\data\salida felicidad 3.xls", excel ctitle("fel sivq25") append
 quietly sivqr fel s26_h s26_b s1 (SNU=s26_l) , quantile(.5)
 estimates store tau50
-outreg2 using "c:\data\salida felicidad.xls", excel ctitle("fel sivq50") append
+outreg2 using "c:\data\salida felicidad 3.xls", excel ctitle("fel sivq50") append
 quietly sivqr fel  s26_h s26_b s1 (SNU=s26_l) , quantile(.75)
 estimates store tau75
-outreg2 using "c:\data\salida felicidad.xls", excel ctitle("fel sivq75") append
+outreg2 using "c:\data\salida felicidad 3.xls", excel ctitle("fel sivq75") append
 
 * Smoothed IV quantile regression
 estimates table tau25 tau50 tau75, b(%9.4f) star stats(N) title(SIVQR)
@@ -306,3 +306,266 @@ ivqreg2 p1st s26_h s26_b s1 SNU  , instruments(SNU s26_l  s26_h s26_b s1)
 qregplot SNU, mtitles("Impacto en p1st")
 graph export "C:\data\Graph4.png", as(png) name("Graph")
 
+* Por países
+*Argentina
+* Cuantíl del 15% más feliz
+quietly ivqreg2 fel  s26_h s26_b s1 SNU if idenpa==32 , instruments(SNU s26_l  s26_h s26_b s1) q(.25)
+estimates store tau25
+outreg2 using "c:\data\salida felicidad.xls", excel ctitle("ivq25") append
+* Cuantíl del 50%
+quietly ivqreg2 fel  s26_h s26_b s1 SNU if idenpa==32, instruments(SNU s26_l  s26_h s26_b s1) q(.5)
+estimates store tau50
+outreg2 using "c:\data\salida felicidad.xls", excel ctitle("ivq50") append
+* Cuantíl del 15% menos feliz
+quietly ivqreg2 fel  s26_h s26_b s1 SNU  if idenpa==32, instruments(SNU s26_l  s26_h s26_b s1) q(.75)
+estimates store tau75
+outreg2 using "c:\data\salida felicidad por paises.xls", excel ctitle("ivq75") append
+
+* Bolivia
+* Cuantíl del 15% más feliz
+quietly ivqreg2 fel  s26_h s26_b s1 SNU if idenpa==68 , instruments(SNU s26_l  s26_h s26_b s1) q(.25)
+estimates store tau25
+outreg2 using "c:\data\salida felicidad.xls", excel ctitle("ivq25") append
+* Cuantíl del 50%
+quietly ivqreg2 fel  s26_h s26_b s1 SNU if idenpa==68, instruments(SNU s26_l  s26_h s26_b s1) q(.5)
+estimates store tau50
+outreg2 using "c:\data\salida felicidad.xls", excel ctitle("ivq50") append
+* Cuantíl del 15% menos feliz
+quietly ivqreg2 fel  s26_h s26_b s1 SNU  if idenpa==68, instruments(SNU s26_l  s26_h s26_b s1) q(.75)
+estimates store tau75
+outreg2 using "c:\data\salida felicidad por paises.xls", excel ctitle("ivq75") append
+
+* Brasil
+* Cuantíl del 15% más feliz
+quietly ivqreg2 fel  s26_h s26_b s1 SNU if idenpa==76 , instruments(SNU s26_l  s26_h s26_b s1) q(.25)
+estimates store tau25
+outreg2 using "c:\data\salida felicidad.xls", excel ctitle("ivq25") append
+* Cuantíl del 50%
+quietly ivqreg2 fel  s26_h s26_b s1 SNU if idenpa==76, instruments(SNU s26_l  s26_h s26_b s1) q(.5)
+estimates store tau50
+outreg2 using "c:\data\salida felicidad.xls", excel ctitle("ivq50") append
+* Cuantíl del 15% menos feliz
+quietly ivqreg2 fel  s26_h s26_b s1 SNU  if idenpa==76, instruments(SNU s26_l  s26_h s26_b s1) q(.75)
+estimates store tau75
+outreg2 using "c:\data\salida felicidad por paises.xls", excel ctitle("ivq75") append
+
+* Colombia
+* Cuantíl del 15% más feliz
+quietly ivqreg2 fel  s26_h s26_b s1 SNU if idenpa==170 , instruments(SNU s26_l  s26_h s26_b s1) q(.25)
+estimates store tau25
+outreg2 using "c:\data\salida felicidad.xls", excel ctitle("ivq25") append
+* Cuantíl del 50%
+quietly ivqreg2 fel  s26_h s26_b s1 SNU if idenpa==170, instruments(SNU s26_l  s26_h s26_b s1) q(.5)
+estimates store tau50
+outreg2 using "c:\data\salida felicidad.xls", excel ctitle("ivq50") append
+* Cuantíl del 15% menos feliz
+quietly ivqreg2 fel  s26_h s26_b s1 SNU  if idenpa==170, instruments(SNU s26_l  s26_h s26_b s1) q(.75)
+estimates store tau75
+outreg2 using "c:\data\salida felicidad por paises.xls", excel ctitle("ivq75") append
+
+* Costa Rica
+* Cuantíl del 15% más feliz
+quietly ivqreg2 fel  s26_h s26_b s1 SNU if idenpa==188 , instruments(SNU s26_l  s26_h s26_b s1) q(.25)
+estimates store tau25
+outreg2 using "c:\data\salida felicidad.xls", excel ctitle("ivq25") append
+* Cuantíl del 50%
+quietly ivqreg2 fel  s26_h s26_b s1 SNU if idenpa==188, instruments(SNU s26_l  s26_h s26_b s1) q(.5)
+estimates store tau50
+outreg2 using "c:\data\salida felicidad.xls", excel ctitle("ivq50") append
+* Cuantíl del 15% menos feliz
+quietly ivqreg2 fel  s26_h s26_b s1 SNU  if idenpa==188, instruments(SNU s26_l  s26_h s26_b s1) q(.75)
+estimates store tau75
+outreg2 using "c:\data\salida felicidad por paises.xls", excel ctitle("ivq75") append
+
+
+* Chile
+* Cuantíl del 15% más feliz
+quietly ivqreg2 fel  s26_h s26_b s1 SNU if idenpa==152 , instruments(SNU s26_l  s26_h s26_b s1) q(.25)
+estimates store tau25
+outreg2 using "c:\data\salida felicidad.xls", excel ctitle("ivq25") append
+* Cuantíl del 50%
+quietly ivqreg2 fel  s26_h s26_b s1 SNU if idenpa==152, instruments(SNU s26_l  s26_h s26_b s1) q(.5)
+estimates store tau50
+outreg2 using "c:\data\salida felicidad.xls", excel ctitle("ivq50") append
+* Cuantíl del 15% menos feliz
+quietly ivqreg2 fel  s26_h s26_b s1 SNU  if idenpa==152, instruments(SNU s26_l  s26_h s26_b s1) q(.75)
+estimates store tau75
+outreg2 using "c:\data\salida felicidad por paises.xls", excel ctitle("ivq75") append
+
+
+* Ecuador
+* Cuantíl del 15% más feliz
+quietly ivqreg2 fel  s26_h s26_b s1 SNU if idenpa==218 , instruments(SNU s26_l  s26_h s26_b s1) q(.25)
+estimates store tau25
+outreg2 using "c:\data\salida felicidad.xls", excel ctitle("ivq25") append
+* Cuantíl del 50%
+quietly ivqreg2 fel  s26_h s26_b s1 SNU if idenpa==218, instruments(SNU s26_l  s26_h s26_b s1) q(.5)
+estimates store tau50
+outreg2 using "c:\data\salida felicidad.xls", excel ctitle("ivq50") append
+* Cuantíl del 15% menos feliz
+quietly ivqreg2 fel  s26_h s26_b s1 SNU  if idenpa==218, instruments(SNU s26_l  s26_h s26_b s1) q(.75)
+estimates store tau75
+outreg2 using "c:\data\salida felicidad por paises.xls", excel ctitle("ivq75") append
+
+* El Salvador
+* Cuantíl del 15% más feliz
+quietly ivqreg2 fel  s26_h s26_b s1 SNU if idenpa==222 , instruments(SNU s26_l  s26_h s26_b s1) q(.25)
+estimates store tau25
+outreg2 using "c:\data\salida felicidad.xls", excel ctitle("ivq25") append
+* Cuantíl del 50%
+quietly ivqreg2 fel  s26_h s26_b s1 SNU if idenpa==222, instruments(SNU s26_l  s26_h s26_b s1) q(.5)
+estimates store tau50
+outreg2 using "c:\data\salida felicidad.xls", excel ctitle("ivq50") append
+* Cuantíl del 15% menos feliz
+quietly ivqreg2 fel  s26_h s26_b s1 SNU  if idenpa==222, instruments(SNU s26_l  s26_h s26_b s1) q(.75)
+estimates store tau75
+outreg2 using "c:\data\salida felicidad por paises.xls", excel ctitle("ivq75") append
+
+
+* Guatemala
+* Cuantíl del 15% más feliz
+quietly ivqreg2 fel  s26_h s26_b s1 SNU if idenpa==320 , instruments(SNU s26_l  s26_h s26_b s1) q(.25)
+estimates store tau25
+outreg2 using "c:\data\salida felicidad.xls", excel ctitle("ivq25") append
+* Cuantíl del 50%
+quietly ivqreg2 fel  s26_h s26_b s1 SNU if idenpa==320, instruments(SNU s26_l  s26_h s26_b s1) q(.5)
+estimates store tau50
+outreg2 using "c:\data\salida felicidad.xls", excel ctitle("ivq50") append
+* Cuantíl del 15% menos feliz
+quietly ivqreg2 fel  s26_h s26_b s1 SNU  if idenpa==320, instruments(SNU s26_l  s26_h s26_b s1) q(.75)
+estimates store tau75
+outreg2 using "c:\data\salida felicidad por paises.xls", excel ctitle("ivq75") append
+
+
+* Honduras
+* Cuantíl del 15% más feliz
+quietly ivqreg2 fel  s26_h s26_b s1 SNU if idenpa==340 , instruments(SNU s26_l  s26_h s26_b s1) q(.25)
+estimates store tau25
+outreg2 using "c:\data\salida felicidad.xls", excel ctitle("ivq25") append
+* Cuantíl del 50%
+quietly ivqreg2 fel  s26_h s26_b s1 SNU if idenpa==340, instruments(SNU s26_l  s26_h s26_b s1) q(.5)
+estimates store tau50
+outreg2 using "c:\data\salida felicidad.xls", excel ctitle("ivq50") append
+* Cuantíl del 15% menos feliz
+quietly ivqreg2 fel  s26_h s26_b s1 SNU  if idenpa==340, instruments(SNU s26_l  s26_h s26_b s1) q(.75)
+estimates store tau75
+outreg2 using "c:\data\salida felicidad por paises.xls", excel ctitle("ivq75") append
+
+
+* Mexico
+* Cuantíl del 15% más feliz
+quietly ivqreg2 fel  s26_h s26_b s1 SNU if idenpa==484 , instruments(SNU s26_l  s26_h s26_b s1) q(.25)
+estimates store tau25
+outreg2 using "c:\data\salida felicidad.xls", excel ctitle("ivq25") append
+* Cuantíl del 50%
+quietly ivqreg2 fel  s26_h s26_b s1 SNU if idenpa==484, instruments(SNU s26_l  s26_h s26_b s1) q(.5)
+estimates store tau50
+outreg2 using "c:\data\salida felicidad.xls", excel ctitle("ivq50") append
+* Cuantíl del 15% menos feliz
+quietly ivqreg2 fel  s26_h s26_b s1 SNU  if idenpa==484, instruments(SNU s26_l  s26_h s26_b s1) q(.75)
+estimates store tau75
+outreg2 using "c:\data\salida felicidad por paises.xls", excel ctitle("ivq75") append
+
+
+* Nicaragua
+* Cuantíl del 15% más feliz
+quietly ivqreg2 fel  s26_h s26_b s1 SNU if idenpa==558 , instruments(SNU s26_l  s26_h s26_b s1) q(.25)
+estimates store tau25
+outreg2 using "c:\data\salida felicidad.xls", excel ctitle("ivq25") append
+* Cuantíl del 50%
+quietly ivqreg2 fel  s26_h s26_b s1 SNU if idenpa==558, instruments(SNU s26_l  s26_h s26_b s1) q(.5)
+estimates store tau50
+outreg2 using "c:\data\salida felicidad.xls", excel ctitle("ivq50") append
+* Cuantíl del 15% menos feliz
+quietly ivqreg2 fel  s26_h s26_b s1 SNU  if idenpa==558, instruments(SNU s26_l  s26_h s26_b s1) q(.75)
+estimates store tau75
+outreg2 using "c:\data\salida felicidad por paises.xls", excel ctitle("ivq75") append
+
+
+* Panamá
+* Cuantíl del 15% más feliz
+quietly ivqreg2 fel  s26_h s26_b s1 SNU if idenpa==591 , instruments(SNU s26_l  s26_h s26_b s1) q(.25)
+estimates store tau25
+outreg2 using "c:\data\salida felicidad.xls", excel ctitle("ivq25") append
+* Cuantíl del 50%
+quietly ivqreg2 fel  s26_h s26_b s1 SNU if idenpa==591, instruments(SNU s26_l  s26_h s26_b s1) q(.5)
+estimates store tau50
+outreg2 using "c:\data\salida felicidad.xls", excel ctitle("ivq50") append
+* Cuantíl del 15% menos feliz
+quietly ivqreg2 fel  s26_h s26_b s1 SNU  if idenpa==591, instruments(SNU s26_l  s26_h s26_b s1) q(.75)
+estimates store tau75
+outreg2 using "c:\data\salida felicidad por paises.xls", excel ctitle("ivq75") append
+
+* Paraguay
+* Cuantíl del 15% más feliz
+quietly 	
+estimates store tau25
+outreg2 using "c:\data\salida felicidad.xls", excel ctitle("ivq25") append
+* Cuantíl del 50%
+quietly ivqreg2 fel  s26_h s26_b s1 SNU if idenpa==600, instruments(SNU s26_l  s26_h s26_b s1) q(.5)
+estimates store tau50
+outreg2 using "c:\data\salida felicidad.xls", excel ctitle("ivq50") append
+* Cuantíl del 15% menos feliz
+quietly ivqreg2 fel  s26_h s26_b s1 SNU  if idenpa==600, instruments(SNU s26_l  s26_h s26_b s1) q(.75)
+estimates store tau75
+outreg2 using "c:\data\salida felicidad por paises.xls", excel ctitle("ivq75") append
+
+
+* Perú
+* Cuantíl del 15% más feliz
+quietly ivqreg2 fel  s26_h s26_b s1 SNU if idenpa==604 , instruments(SNU s26_l  s26_h s26_b s1) q(.25)
+estimates store tau25
+outreg2 using "c:\data\salida felicidad.xls", excel ctitle("ivq25") append
+* Cuantíl del 50%
+quietly ivqreg2 fel  s26_h s26_b s1 SNU if idenpa==604, instruments(SNU s26_l  s26_h s26_b s1) q(.5)
+estimates store tau50
+outreg2 using "c:\data\salida felicidad.xls", excel ctitle("ivq50") append
+* Cuantíl del 15% menos feliz
+quietly ivqreg2 fel  s26_h s26_b s1 SNU  if idenpa==604, instruments(SNU s26_l  s26_h s26_b s1) q(.75)
+estimates store tau75
+outreg2 using "c:\data\salida felicidad por paises.xls", excel ctitle("ivq75") append
+
+
+* R. Dominicana
+* Cuantíl del 15% más feliz
+quietly ivqreg2 fel  s26_h s26_b s1 SNU if idenpa==214 , instruments(SNU s26_l  s26_h s26_b s1) q(.25)
+estimates store tau25
+outreg2 using "c:\data\salida felicidad.xls", excel ctitle("ivq25") append
+* Cuantíl del 50%
+quietly ivqreg2 fel  s26_h s26_b s1 SNU if idenpa==214, instruments(SNU s26_l  s26_h s26_b s1) q(.5)
+estimates store tau50
+outreg2 using "c:\data\salida felicidad.xls", excel ctitle("ivq50") append
+* Cuantíl del 15% menos feliz
+quietly ivqreg2 fel  s26_h s26_b s1 SNU  if idenpa==214, instruments(SNU s26_l  s26_h s26_b s1) q(.75)
+estimates store tau75
+outreg2 using "c:\data\salida felicidad por paises.xls", excel ctitle("ivq75") append
+
+
+* Uruguay
+* Cuantíl del 15% más feliz
+quietly ivqreg2 fel  s26_h s26_b s1 SNU if idenpa==858 , instruments(SNU s26_l  s26_h s26_b s1) q(.25)
+estimates store tau25
+outreg2 using "c:\data\salida felicidad.xls", excel ctitle("ivq25") append
+* Cuantíl del 50%
+quietly ivqreg2 fel  s26_h s26_b s1 SNU if idenpa==858, instruments(SNU s26_l  s26_h s26_b s1) q(.5)
+estimates store tau50
+outreg2 using "c:\data\salida felicidad.xls", excel ctitle("ivq50") append
+* Cuantíl del 15% menos feliz
+quietly ivqreg2 fel  s26_h s26_b s1 SNU  if idenpa==858, instruments(SNU s26_l  s26_h s26_b s1) q(.75)
+estimates store tau75
+outreg2 using "c:\data\salida felicidad por paises.xls", excel ctitle("ivq75") append
+
+
+* Venezuela
+* Cuantíl del 15% más feliz
+quietly ivqreg2 fel  s26_h s26_b s1 SNU if idenpa==862 , instruments(SNU s26_l  s26_h s26_b s1) q(.25)
+estimates store tau25
+outreg2 using "c:\data\salida felicidad.xls", excel ctitle("ivq25") append
+* Cuantíl del 50%
+quietly ivqreg2 fel  s26_h s26_b s1 SNU if idenpa==862, instruments(SNU s26_l  s26_h s26_b s1) q(.5)
+estimates store tau50
+outreg2 using "c:\data\salida felicidad.xls", excel ctitle("ivq50") append
+* Cuantíl del 15% menos feliz
+quietly ivqreg2 fel  s26_h s26_b s1 SNU  if idenpa==862, instruments(SNU s26_l  s26_h s26_b s1) q(.75)
+estimates store tau75
+outreg2 using "c:\data\salida felicidad por paises.xls", excel ctitle("ivq75") append
