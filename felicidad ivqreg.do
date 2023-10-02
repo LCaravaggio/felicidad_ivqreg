@@ -8,7 +8,7 @@ cscript
 set more off
 set seed 12345
 
-use c:\data\LB2020
+use c:\data\felicidad_ivqreg\LB2020.dta
 
 * Generar felicidad alternativa
 gen fel=0
@@ -91,6 +91,7 @@ quietly reg SNU s26_l
 estimates store OLS2
 outreg2 using "c:\data\salida felicidad.xls", excel ctitle("OLS2") append
 
+
 * 2SLS
 quietly reg SNU s26_l
 estimates store twoSLS1
@@ -104,6 +105,14 @@ estimates table OLS1 OLS2 twoSLS1 twoSLS2, b(%9.4f) star stats(N r2) title(OLS)
 * Estimación con IV y Test de Kleibergen-Paap
 ivreg2 p1st s16 s26_h (SNU=s26_l), robust
 outreg2 using "c:\data\salida felicidad.xls", excel ctitle("ivreg2") append
+
+
+* Estimación con IV y Test de Kleibergen-Paap para Latencia en la conexión
+decode ciudad, generate(city)
+merge m:1 city using "C:\data\felicidad_ivqreg\ciudades_latlon.dta" 
+ivreg2 p1st s16 s26_h (SNU=avg_lat_ms), robust
+
+********************************************************************************
 
 
 *Regresión cuantílica usando Smartphone ownership como IV de SNU
